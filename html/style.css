@@ -1,0 +1,118 @@
+/* ════════════════════════════════════════════════════════════════════════════════════
+   HM BUS JOB - ADDITIONAL STYLES
+   ════════════════════════════════════════════════════════════════════════════════════ */
+
+/* Hide menu by default */
+.busMenu {
+    display: none;
+}
+
+/* Smooth transitions */
+.routeItemGroup {
+    transition: all 0.3s ease;
+}
+
+.routeItemGroup:hover {
+    transform: translateX(2px);
+}
+
+/* Action button animations */
+.routeActionSpan {
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+
+.routeActionSpan:hover:not(.lockedSpan) {
+    transform: scale(1.05);
+    box-shadow: 0 0 20px rgba(232, 132, 26, 0.4);
+}
+
+/* Selected route highlight */
+.routeItemGroup.selected .routeActionSpan {
+    animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+    0%, 100% {
+        opacity: 1;
+    }
+    50% {
+        opacity: 0.8;
+    }
+}
+
+/* Locked route styling */
+.routeItemGroup.locked {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+.routeItemGroup.locked * {
+    cursor: not-allowed !important;
+}
+
+/* Custom scrollbar styling */
+.menuContainer::-webkit-scrollbar {
+    width: 6px;
+}
+
+.menuContainer::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 3px;
+}
+
+.menuContainer::-webkit-scrollbar-thumb {
+    background: var(--themeColor);
+    border-radius: 3px;
+}
+
+.menuContainer::-webkit-scrollbar-thumb:hover {
+    background: var(--accentColor);
+}
+
+/* Notification styles (optional) */
+.notification {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    padding: 15px 20px;
+    background: rgba(0, 0, 0, 0.9);
+    border-left: 4px solid var(--themeColor);
+    border-radius: 5px;
+    color: white;
+    font-size: 14px;
+    z-index: 9999;
+    animation: slideIn 0.3s ease;
+}
+
+@keyframes slideIn {
+    from {
+        transform: translateX(100%);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+/* Routes section spacing */
+.routes-section {
+    margin-top: 10px;
+}
+
+/* Action label styling */
+.actionLabel {
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.selectedLabel {
+    color: #69F0AE;
+}
+
+.lockedLabel {
+    color: #E53935;
+}

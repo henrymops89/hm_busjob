@@ -1,0 +1,1016 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bus Driver - Job Menu</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        :root {
+            --themeColor: #E8841A;
+            --accentColor: #F0A030;
+            --errorColor: #FF5252;
+            --successColor: #69F0AE;
+            --lockedColor: #E53935;
+            --salaryColor: #4CAF50;
+            --gradientFirst: transparent;
+            --gradientSecond: rgba(232, 132, 26, 0.24);
+        }
+
+        * {
+            user-select: none;
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+            color: white;
+            overflow: hidden;
+            background: linear-gradient(90deg, rgba(0, 0, 0, 0.95) 0%, rgba(0, 0, 0, 0.2) 60%);
+        }
+
+        /* === MAIN CONTAINER === */
+        .busMenu {
+            display: flex;
+            width: 100vw;
+            height: 100vh;
+            padding: 30px;
+        }
+
+        .menuContainer {
+            width: 540px;
+            height: calc(100vh - 60px);
+            overflow-y: auto;
+            overflow-x: hidden;
+            padding: 0 15px;
+        }
+        /* === JOB TITLE === */
+        .jobTitle {
+            margin-bottom: 15px;
+        }
+
+        .jobTitle .title {
+            font-size: 36px;
+            font-weight: 700;
+            line-height: 1;
+        }
+
+        .jobTitle .title .red {
+            color: var(--themeColor);
+        }
+
+        .jobTitle .title .white {
+            color: white;
+        }
+
+        .jobTitle .subtitle {
+            font-size: 13px;
+            font-weight: 500;
+            letter-spacing: 0.8em;
+            color: rgba(255, 255, 255, 0.5);
+            margin-left: 2px;
+            margin-top: 5px;
+        }
+
+        /* === HEADER === */
+        .header {
+            position: relative;
+            margin-bottom: 20px;
+        }
+
+        .backgroundText {
+            position: relative;
+            height: 90px;
+            display: flex;
+            align-items: center;
+        }
+
+        .backgroundText .bgText {
+            position: absolute;
+            font-size: 90px;
+            font-weight: 900;
+            letter-spacing: 0.13em;
+            color: rgba(255, 255, 255, 0.03);
+            white-space: nowrap;
+            margin-left: -2px;
+        }
+
+        .decorationLine {
+            display: flex;
+            align-items: center;
+            font-size: 32px;
+            font-weight: 700;
+            z-index: 2;
+            margin-left: 24px;
+            position: relative;
+        }
+
+        .decorationLine .text {
+            clip-path: polygon(0 46%, 7.5% 100%, 100% 100%, 100% 0%, 0 0);
+        }
+
+        .decorationLine svg {
+            margin-left: 10px;
+        }
+
+        /* === DESCRIPTION === */
+        .description {
+            font-size: 13px;
+            font-weight: 300;
+            color: rgba(255, 255, 255, 0.4);
+            line-height: 1.6;
+            margin-bottom: 20px;
+            font-style: italic;
+        }
+
+        /* === SECTION HEADER === */
+        .sectionHeader {
+            margin-top: 22px;
+            margin-bottom: 12px;
+        }
+
+        .sectionHeader .decorationLine {
+            font-size: 16px;
+            margin-left: 0;
+        }
+
+        .sectionHeader .line {
+            height: 1px;
+            background: linear-gradient(90deg, var(--themeColor) 0%, transparent 100%);
+            margin-top: 8px;
+        }
+
+        /* === PLAYER PROFILE (single row) === */
+        .profileRow {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            background: linear-gradient(90deg, rgba(255, 255, 255, 0.015) 0%, rgba(255, 255, 255, 0) 100%);
+            border-radius: 5px;
+            padding: 16px 20px;
+            margin-bottom: 6px;
+        }
+
+        .profileSection {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            flex-shrink: 0;
+        }
+
+        .profileAvatar {
+            width: 52px;
+            height: 52px;
+            border-radius: 8px;
+            overflow: hidden;
+            flex-shrink: 0;
+            position: relative;
+            background: linear-gradient(135deg, #5a8a3a, #3a6a2a);
+        }
+
+        .profileAvatar .head {
+            position: absolute;
+            top: 4px;
+            left: 11px;
+            width: 30px;
+            height: 24px;
+            background: #f0c070;
+            border-radius: 3px;
+        }
+
+        .profileAvatar .hair {
+            position: absolute;
+            top: 0;
+            left: 9px;
+            width: 34px;
+            height: 10px;
+            background: #6a4a2a;
+            border-radius: 3px 3px 0 0;
+        }
+
+        .profileAvatar .eyes {
+            position: absolute;
+            top: 14px;
+            left: 16px;
+            width: 24px;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .profileAvatar .eye {
+            width: 6px;
+            height: 6px;
+            background: #222;
+            border-radius: 1px;
+        }
+
+        .profileAvatar .mouth {
+            position: absolute;
+            top: 22px;
+            left: 19px;
+            width: 14px;
+            height: 3px;
+            background: #c08040;
+            border-radius: 1px;
+        }
+
+        .profileAvatar .body {
+            position: absolute;
+            bottom: 0;
+            left: 9px;
+            width: 34px;
+            height: 20px;
+            background: #3a7a2a;
+            border-radius: 2px;
+        }
+
+        .profileAvatar .badge {
+            position: absolute;
+            bottom: 2px;
+            right: 2px;
+            width: 14px;
+            height: 14px;
+            background: #2aa8e0;
+            border-radius: 3px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 8px;
+            z-index: 3;
+        }
+
+        .profileInfo {
+            flex: 1;
+            text-align: right;
+        }
+
+        .profileInfo .name {
+            font-size: 18px;
+            font-weight: 700;
+        }
+
+        .profileInfo .label {
+            font-size: 11px;
+            color: rgba(255, 255, 255, 0.4);
+            font-weight: 300;
+        }
+
+        /* === STATS (inline in profile row) === */
+        .statsInline {
+            display: flex;
+            gap: 20px;
+            flex: 1;
+            justify-content: flex-start;
+        }
+
+        .statInline {
+            text-align: center;
+        }
+
+        .statInline .label {
+            font-size: 10px;
+            font-weight: 300;
+            color: rgba(255, 255, 255, 0.4);
+            margin-bottom: 3px;
+        }
+
+        .statInline .value {
+            font-size: 22px;
+            font-weight: 700;
+            color: var(--themeColor);
+        }
+
+        /* === ROUTE BANNER === */
+        .routeBanner {
+            position: relative;
+            height: 85px;
+            border-radius: 5px;
+            overflow: hidden;
+            margin-top: 6px;
+            margin-bottom: 6px;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+        }
+
+        /* Fallback if no image */
+        .routeBanner.noImage {
+            background: linear-gradient(135deg, #1a3a2a, #2a5a3a, #1a4a2a);
+        }
+
+        .routeBanner .bannerOverlay {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(90deg, rgba(0,0,0,0.5) 0%, rgba(0,0,0,0.15) 50%, rgba(0,0,0,0.3) 100%);
+        }
+
+        .routeBanner .bannerContent {
+            position: relative;
+            z-index: 2;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 20px;
+        }
+
+        .routeBanner .routeWent {
+            text-align: right;
+        }
+
+        .routeBanner .routeWent .label {
+            font-size: 11px;
+            color: rgba(255, 255, 255, 0.5);
+            font-weight: 300;
+        }
+
+        .routeBanner .routeWent .value {
+            font-size: 28px;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            gap: 8px;
+        }
+
+        .routeBanner .routeWent .value svg {
+            width: 18px;
+            height: 18px;
+            color: #f0c020;
+        }
+
+        /* === ROUTE ITEM GROUP (action spans both boxes) === */
+        .routeItemGroup {
+            display: flex;
+            gap: 6px;
+            border-radius: 5px;
+            overflow: visible;
+            margin-top: 6px;
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+
+        .routeItemGroup.selected {
+            border: none;
+            background: none;
+        }
+
+        .routeItemGroup.selected .routeItem.noBorder {
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            background: linear-gradient(90deg, rgba(255, 255, 255, 0.036) 0%, rgba(255, 255, 255, 0) 100%);
+        }
+
+        .routeItemGroup.selected .routeDetailsBox.noBorder {
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            background: linear-gradient(90deg, rgba(255, 255, 255, 0.036) 0%, rgba(255, 255, 255, 0) 100%);
+        }
+
+        .routeItemGroupContent {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .routeItemGroup .routeItem.noBorder {
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            background: linear-gradient(90deg, rgba(255, 255, 255, 0.036) 0%, rgba(255, 255, 255, 0) 100%);
+            margin-top: 0;
+            border-radius: 5px;
+        }
+
+        .routeItemGroup .routeItem.noBorder:hover {
+            transform: none;
+            background: linear-gradient(90deg, rgba(255, 255, 255, 0.036) 0%, rgba(255, 255, 255, 0) 100%);
+        }
+
+        .routeDetailsBox.noBorder {
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            background: linear-gradient(90deg, rgba(255, 255, 255, 0.036) 0%, rgba(255, 255, 255, 0) 100%);
+            margin-top: 0;
+            border-radius: 5px;
+        }
+
+        .routeActionSpan {
+            width: 90px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 5px;
+            flex-shrink: 0;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 5px;
+            background: linear-gradient(180deg, rgba(232,132,26,0.3), rgba(232,132,26,0.1));
+            transition: all 0.3s;
+        }
+
+        .routeActionSpan svg {
+            width: 28px;
+            height: 28px;
+        }
+
+        .routeActionSpan.lockedSpan {
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            background: linear-gradient(180deg, rgba(229,57,53,0.12), rgba(229,57,53,0.04));
+        }
+
+        .routeItemGroup.locked {
+            opacity: 0.7;
+            cursor: not-allowed;
+        }
+
+        .routeItemGroup.locked:hover {
+            background: linear-gradient(90deg, rgba(229, 57, 53, 0.04) 0%, rgba(229, 57, 53, 0) 100%);
+        }
+
+        /* === ROUTE ITEMS === */
+        .routeItem {
+            background: linear-gradient(90deg, rgba(255, 255, 255, 0.036) 0%, rgba(255, 255, 255, 0) 100%);
+            border-radius: 5px;
+            margin-top: 6px;
+            display: flex;
+            overflow: hidden;
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+
+        .routeItem:hover {
+            background: linear-gradient(90deg, rgba(33, 150, 243, 0.06) 0%, rgba(33, 150, 243, 0) 100%);
+            transform: translateX(5px);
+        }
+
+        .routeItem.selected {
+            border: 1px solid var(--themeColor);
+            background: linear-gradient(225.41deg, var(--gradientFirst) 25.18%, var(--gradientSecond) 74.83%);
+        }
+
+        .routeItem.selected:hover {
+            transform: translateX(0);
+        }
+
+        .routeItem.locked {
+            opacity: 0.7;
+            cursor: not-allowed;
+        }
+
+        .routeItem.locked:hover {
+            transform: translateX(0);
+            background: linear-gradient(90deg, rgba(229, 57, 53, 0.04) 0%, rgba(229, 57, 53, 0) 100%);
+        }
+
+        .routeItemContent {
+            flex: 1;
+            padding: 15px;
+        }
+
+        .routeItemTop {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .routeThumbnail {
+            width: 75px;
+            height: 48px;
+            border-radius: 4px;
+            flex-shrink: 0;
+            overflow: hidden;
+            position: relative;
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+        }
+
+        /* Fallback gradient if no image set */
+        .routeThumbnail.noImage {
+            background: linear-gradient(135deg, #1a3a2a, #2a5a3a, #1a4a1a);
+        }
+
+        /* Dark overlay on thumbnail for readability */
+        .routeThumbnail::after {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(90deg, rgba(0,0,0,0.2), rgba(0,0,0,0.05));
+        }
+
+        .routeNameSalary {
+            flex: 1;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+        }
+
+        .routeName .label {
+            font-size: 11px;
+            font-weight: 300;
+            color: rgba(255, 255, 255, 0.4);
+        }
+
+        .routeName .value {
+            font-size: 17px;
+            font-weight: 700;
+        }
+
+        .routeSalary {
+            text-align: right;
+        }
+
+        .routeSalary .label {
+            font-size: 11px;
+            font-weight: 300;
+            color: rgba(255, 255, 255, 0.4);
+        }
+
+        .routeSalary .value {
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--salaryColor);
+        }
+
+        /* Route details box (separate) */
+        .routeDetailsBox {
+            background: linear-gradient(90deg, rgba(255, 255, 255, 0.036) 0%, rgba(255, 255, 255, 0) 100%);
+            border-radius: 5px;
+            margin-top: 6px;
+            padding: 14px 20px;
+        }
+
+        .routeDetailsBox.selected {
+            border: 1px solid var(--themeColor);
+            background: linear-gradient(225.41deg, var(--gradientFirst) 25.18%, var(--gradientSecond) 74.83%);
+        }
+
+        /* Route details row */
+        .routeDetails {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .routeDetail {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .routeDetail svg {
+            width: 30px;
+            height: 30px;
+            color: rgba(255, 255, 255, 0.4);
+            flex-shrink: 0;
+        }
+
+        .routeDetail .detailLabel {
+            font-size: 11px;
+            font-weight: 300;
+            color: rgba(255, 255, 255, 0.4);
+        }
+
+        .routeDetail .detailValue {
+            font-size: 18px;
+            font-weight: 700;
+        }
+
+        .routeDetail .detailValue.green {
+            color: var(--salaryColor);
+        }
+
+        /* Locked status */
+        .routeLocked {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .lockedLabel {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--lockedColor);
+        }
+
+        .lockedLabel svg {
+            width: 16px;
+            height: 16px;
+        }
+
+        .unlockInfo {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 12px;
+            color: rgba(255, 255, 255, 0.5);
+        }
+
+        .unlockInfo .unlockValue {
+            font-weight: 700;
+            color: white;
+            font-size: 14px;
+        }
+
+        .unlockInfo svg {
+            width: 14px;
+            height: 14px;
+            color: #f0c020;
+        }
+
+        /* Route action button (right side) */
+        .routeAction {
+            width: 72px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 5px;
+            flex-shrink: 0;
+            border-left: 1px solid rgba(255, 255, 255, 0.03);
+            transition: all 0.3s;
+        }
+
+        .routeItem.selected .routeAction {
+            background: linear-gradient(180deg, rgba(33,150,243,0.3), rgba(33,150,243,0.15));
+        }
+
+        .routeItem.locked .routeAction {
+            background: linear-gradient(180deg, rgba(229,57,53,0.08), rgba(229,57,53,0.02));
+        }
+
+        .routeAction svg {
+            width: 28px;
+            height: 28px;
+        }
+
+        .routeAction .actionLabel {
+            font-size: 10px;
+            font-weight: 600;
+        }
+
+        .routeAction .actionLabel.selectedLabel {
+            color: var(--accentColor);
+        }
+
+        .routeAction .actionLabel.lockedLabel {
+            color: var(--lockedColor);
+        }
+
+        /* === HISTORY === */
+        .historyItem {
+            background: linear-gradient(90deg, rgba(255, 255, 255, 0.036) 0%, rgba(255, 255, 255, 0) 100%);
+            border-radius: 5px;
+            padding: 14px 18px;
+            margin-top: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .historyLeft {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .historyLeft svg {
+            width: 16px;
+            height: 16px;
+            color: rgba(255, 255, 255, 0.4);
+        }
+
+        .historyLeft .routeHistoryName {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--themeColor);
+        }
+
+        .historyDate {
+            font-size: 12px;
+            color: rgba(255, 255, 255, 0.35);
+        }
+
+        /* === BUTTON === */
+        .button {
+            width: 100%;
+            background: linear-gradient(225.41deg, var(--gradientFirst) 25.18%, var(--gradientSecond) 74.83%);
+            border: 1px solid var(--themeColor);
+            border-radius: 5px;
+            padding: 15px;
+            text-align: center;
+            font-size: 15px;
+            font-weight: 700;
+            color: white;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-top: 14px;
+            letter-spacing: 0.05em;
+        }
+
+        .button:hover {
+            transform: scale(1.02);
+            box-shadow: 0 4px 20px rgba(232, 132, 26, 0.3);
+        }
+
+        .button:active {
+            transform: scale(0.98);
+        }
+
+        /* === NOTIFICATIONS === */
+        .notifications {
+            position: fixed;
+            top: 30px;
+            right: 30px;
+            width: 350px;
+            z-index: 1000;
+        }
+
+        .notification {
+            background: linear-gradient(90deg, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0.05) 100%);
+            backdrop-filter: blur(10px);
+            border-left: 3px solid var(--themeColor);
+            border-radius: 5px;
+            padding: 15px 20px;
+            margin-bottom: 10px;
+            display: flex;
+            gap: 15px;
+            align-items: center;
+            animation: slideIn 0.3s ease-out;
+        }
+
+        .notification.info {
+            border-left-color: var(--themeColor);
+        }
+
+        .notification .notifIcon {
+            font-size: 20px;
+            flex-shrink: 0;
+        }
+
+        .notification .notifContent {
+            flex: 1;
+        }
+
+        .notification .notifTitle {
+            font-size: 14px;
+            font-weight: 700;
+            margin-bottom: 3px;
+        }
+
+        .notification .notifDesc {
+            font-size: 12px;
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        @keyframes slideIn {
+            from {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        /* === PROGRESS BAR === */
+        .progressBar {
+            height: 8px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .progressFill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--themeColor), var(--accentColor));
+            border-radius: 4px;
+            transition: width 0.5s ease;
+        }
+
+        /* === BOX (reusable) === */
+        .box {
+            min-height: 65px;
+            background: linear-gradient(90deg, rgba(255, 255, 255, 0.036) 0%, rgba(255, 255, 255, 0) 100%);
+            border-radius: 5px;
+            margin-top: 6px;
+            padding: 15px 20px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            transition: all 0.3s;
+        }
+
+        .box:hover {
+            background: linear-gradient(90deg, rgba(232, 132, 26, 0.06) 0%, rgba(232, 132, 26, 0) 100%);
+        }
+
+        .box .icon {
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 42px;
+            height: 42px;
+            flex-shrink: 0;
+        }
+
+        .box .icon svg {
+            width: 32px;
+            height: 32px;
+            z-index: 2;
+        }
+
+        .box .icon::after {
+            content: "";
+            position: absolute;
+            width: 42px;
+            height: 42px;
+            background: var(--themeColor);
+            opacity: 0.1;
+            border-radius: 50%;
+        }
+
+        .box .content {
+            flex: 1;
+        }
+
+        .box .topic {
+            font-size: 13px;
+            font-weight: 300;
+            color: rgba(255, 255, 255, 0.5);
+            margin-bottom: 4px;
+        }
+
+        .box .boxValue {
+            font-size: 15px;
+            font-weight: 700;
+        }
+
+        .box .badge {
+            padding: 4px 12px;
+            background: var(--themeColor);
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 600;
+            flex-shrink: 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="busMenu">
+        <div class="menuContainer">
+            <!-- JOB TITLE -->
+            <div class="jobTitle">
+                <div class="title">
+                    <span class="red">BUS</span> <span class="white">DRIVER</span>
+                </div>
+                <div class="subtitle">JOB MENU</div>
+            </div>
+
+            <!-- HEADER DECORATION -->
+            <div class="header">
+                <div class="backgroundText">
+                    <div class="bgText">DRIVER</div>
+                    <div class="decorationLine">
+                        <div class="text">BUS DRIVER</div>
+                        <svg width="80" height="17" viewBox="0 0 80 17" fill="none">
+                            <path d="M0 8.5L15 0.5L30 16.5L45 0.5L60 16.5L75 0.5L80 8.5" stroke="currentColor" stroke-width="1"/>
+                        </svg>
+                    </div>
+                </div>
+            </div>
+
+            <!-- DESCRIPTION -->
+            <div class="description">
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam eu turpis molestie, dictumest a, mattis
+            </div>
+
+            <!-- PLAYER PROFILE SECTION -->
+            <div class="sectionHeader">
+                <div class="decorationLine">
+                    <div class="text">PLAYER PROFILE</div>
+                </div>
+                <div class="line"></div>
+            </div>
+
+            <div class="profileRow">
+                <div class="statsInline">
+                    <div class="statInline">
+                        <div class="label">Level</div>
+                        <div class="value">1</div>
+                    </div>
+                    <div class="statInline">
+                        <div class="label">Experience</div>
+                        <div class="value">120</div>
+                    </div>
+                    <div class="statInline">
+                        <div class="label">Routes Done</div>
+                        <div class="value">1</div>
+                    </div>
+                    <div class="statInline">
+                        <div class="label">Total Earned</div>
+                        <div class="value">$100</div>
+                    </div>
+                </div>
+
+                <div class="profileSection">
+                    <div class="profileInfo">
+                        <div class="label">Player Name</div>
+                        <div class="name">Yusuf BAKER</div>
+                    </div>
+                    <div class="profileAvatar">
+                        <div class="hair"></div>
+                        <div class="head">
+                            <div class="eyes">
+                                <div class="eye"></div>
+                                <div class="eye"></div>
+                            </div>
+                            <div class="mouth"></div>
+                        </div>
+                        <div class="body"></div>
+                        <div class="badge">⚡</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- EXP Progress -->
+            <div class="box" style="margin-top: 6px;">
+                <div class="icon">
+                    <svg viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/>
+                    </svg>
+                </div>
+                <div class="content" style="width: 100%;">
+                    <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
+                        <div class="topic">Experience Progress</div>
+                        <div class="boxValue">120 / 500 XP</div>
+                    </div>
+                    <div class="progressBar">
+                        <div class="progressFill" style="width: 24%;"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ROUTE BANNER - set background-image via style for custom screenshots -->
+            <!-- Example: style="background-image: url('your-screenshot.jpg');" -->
+            <div class="routeBanner noImage">
+                <div class="bannerOverlay"></div>
+                <div class="bannerContent">
+                    <div></div>
+                    <div class="routeWent">
+                        <div class="label">Route Went</div>
+                        <div class="value">
+                            1
+                            <svg viewBox="0 0 20 20" fill="none">
+                                <path d="M10 2L1 18h18L10 2z" fill="#f0c020" stroke="#c9a010" stroke-width="0.5"/>
+                                <text x="10" y="15" text-anchor="middle" fill="#1a1a1a" font-size="10" font-weight="bold">!</text>
+                            </svg>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ROUTES SECTION -->
+            <div class="sectionHeader">
+                <div class="decorationLine">
+                    <div class="text">ROUTES</div>
+                </div>
+            <!-- Routes will be dynamically generated here -->
+            <div id="routesContainer"></div>
+    <!-- NOTIFICATION -->
+    <div class="notifications">
+        <div class="notification info">
+            <div class="notifIcon">🚌</div>
+            <div class="notifContent">
+                <div class="notifTitle">Route Selected!</div>
+                <div class="notifDesc">Beach Route is ready to go. 18 stops, $100 salary.</div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Route selection
+        document.querySelectorAll('.routeItem:not(.locked)').forEach(item => {
+            item.addEventListener('click', function() {
+                document.querySelectorAll('.routeItem').forEach(r => r.classList.remove('selected'));
+                this.classList.add('selected');
+            });
+        });
+
+        // Auto-hide notification
+        setTimeout(() => {
+            const notif = document.querySelector('.notification');
+            if (notif) {
+                notif.style.animation = 'slideIn 0.3s ease-out reverse';
+                setTimeout(() => notif.remove(), 300);
+            }
+        }, 3000);
+    </script>
+    <script src="script.js"></script>
+</body>
+</html>
